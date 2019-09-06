@@ -1,2 +1,2 @@
 # SUSHIHOUSE
-this is a application for ONEPIECE  studio
+A learning note for deep learning
