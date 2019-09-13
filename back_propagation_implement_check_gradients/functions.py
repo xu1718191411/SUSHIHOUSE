@@ -25,7 +25,7 @@ def numerical_gradients(x,f):
     delta = 1e-4
     result = np.zeros_like(x)
     while not arr.finished:
-        index = arr.index
+        index = arr.multi_index
         value = x[index]
         x[index] = value - delta
         s1 = f(x)

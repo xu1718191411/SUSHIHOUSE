@@ -1,5 +1,5 @@
 import numpy as np
-from back_implement_read_data.functions import *
+from back_propagation_implement_check_gradients.functions import *
 
 class TwoLayer:
     inputSize = None
@@ -50,12 +50,12 @@ class TwoLayer:
         z4 = z3 + self.params['b2']
         y = softmax(z4)
         g0 = ((y - t)/x.shape[0]) * dz
-        gb2 = np.sum(g0)
+        gb2 = np.sum(g0,axis=0)
         gw2 = np.dot(z2.T,g0)
         g1 = np.dot(g0, self.params['w2'].T)
 
         g2 = z2*(1-z2)*g1
-        gb1 = np.sum(g2)
+        gb1 = np.sum(g2,axis=0)
 
         gw1 = np.dot(x.T, g2)
         gradients = {}
