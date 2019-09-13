@@ -6,6 +6,13 @@ class TwoLayer:
     hiddenSize = None
     outputSize = None
 
+    z0 = None
+    z1 = None
+    z2 = None
+    z3 = None
+    z4 = None
+
+
     params = {}
 
     def __init__(self,inputSize,hiddenSize,outputSize):
@@ -33,6 +40,31 @@ class TwoLayer:
         res = self.predict(x)
         loss = cross_entropy_error(res,t)
         return loss
+
+
+    def back(self,x,t,dz=1):
+        z0 = np.dot(x,self.params['w1'])
+        z1 = z0 + self.params['b1']
+        z2 = sigmoid(z1)
+        z3 = np.dot(z2,self.params['w2'])
+        z4 = z3 + self.params['b2']
+        y = softmax(z4)
+        g0 = ((y - t)/x.shape[0]) * dz
+        gb2 = np.sum(g0)
+        gw2 = np.dot(z2.T,g0)
+        g1 = np.dot(go, self.params['w2'].T)
+
+        g2 = z2*(1-z2)*g1
+        gb1 = np.sum(g2)
+
+        gw1 = np.dot(x.T, g2)
+        gradients = {}
+        gradients['w1'] = gw1
+        gradients['b1'] = gb1
+        gradients['w2'] = gw2
+        gradients['b2'] = gb2
+        return gradients
+
 
 
 
