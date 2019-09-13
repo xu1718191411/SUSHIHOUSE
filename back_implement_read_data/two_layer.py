@@ -52,7 +52,7 @@ class TwoLayer:
         g0 = ((y - t)/x.shape[0]) * dz
         gb2 = np.sum(g0)
         gw2 = np.dot(z2.T,g0)
-        g1 = np.dot(go, self.params['w2'].T)
+        g1 = np.dot(g0, self.params['w2'].T)
 
         g2 = z2*(1-z2)*g1
         gb1 = np.sum(g2)

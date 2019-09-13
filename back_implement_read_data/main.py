@@ -16,4 +16,4 @@ teacher = trainLabel[mask]
 
 result = layer.loss(input,teacher)
 
-print(result)
+gradients = layer.back(input,teacher,1)
