@@ -65,6 +65,16 @@ class TwoLayer:
         gradients['b2'] = gb2
         return gradients
 
+    def calculate_numerical_gradients(self,x,t):
+        f = lambda p:self.loss(x,t)
+        gradients = {}
+        gradients['w1'] = numerical_gradients(self.params['w1'], f)
+        gradients['b1'] = numerical_gradients(self.params['b1'], f)
+        gradients['w2'] = numerical_gradients(self.params['w2'], f)
+        gradients['b2'] = numerical_gradients(self.params['b2'], f)
+        return gradients
+
+
 
 
 
