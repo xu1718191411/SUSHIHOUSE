@@ -31,7 +31,7 @@ class TwoLayer:
         self.z0 = np.dot(x, self.params['w1'])
         self.z1 = self.z0 + self.params['b1']
         self.z2 = sigmoid(self.z1)
-        self.z3 = np.dot(self.z2,self.params['w2'])
+        self.z3 = np.dot(self.z2, self.params['w2'])
         self.z4 = self.z3 + self.params['b2']
         self.y = softmax(self.z4)
         return self.y
@@ -42,6 +42,7 @@ class TwoLayer:
         return loss
 
     def back(self,x,t,dout):
+        self.loss(x,t)
         g0 = ((self.y - t)/ x.shape[0]) * dout
         gb2 = np.sum(g0,axis=0)
         gw2 = np.dot(self.z2.T,g0)

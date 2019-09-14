@@ -5,10 +5,10 @@ trainImg,trainLabel,testImg,testLabel = init_data()
 
 
 inputSize = trainImg.shape[1]
-HIDDEN_SIZE = 20
+HIDDEN_SIZE = 50
 OUTPUT_SIZE = 10
 BATCH_SIZE = 100
-LEARNING_RATE = 0.001
+LEARNING_RATE = 0.1
 LEARNING_NUM = 10000
 
 layer = TwoLayer(inputSize, HIDDEN_SIZE, OUTPUT_SIZE)

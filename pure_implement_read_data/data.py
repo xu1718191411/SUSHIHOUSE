@@ -14,6 +14,8 @@ def initData():
         testLabel = data['test_label']
         trainLabel = onehot(trainLabel)
         testLabel = onehot(testLabel)
+        trainImg = normolization(trainImg)
+        trainLabel = normolization(trainLabel)
     return trainImg,trainLabel,testImg,testLabel
 
 
@@ -25,5 +27,10 @@ def onehot(x):
         maxarg = x[i]
         res[i][maxarg] = 1
     return res
+
+def normolization(x):
+    x = x / 255.0
+    return x
+
 
 

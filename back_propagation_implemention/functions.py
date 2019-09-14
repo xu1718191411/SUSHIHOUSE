@@ -19,7 +19,7 @@ def softmax(x):
 
 
 def cross_entropy_error(x, t):
-    delta = 1e-4
+    delta = 1e-7
     res = -1 * t * np.log(x + delta)
     total = np.sum(res)
     return total / x.shape[0]

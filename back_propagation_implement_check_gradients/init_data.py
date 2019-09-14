@@ -9,12 +9,15 @@ def init_data():
 
     with open(dataPath, 'rb') as f:
         data = pickle.load(f)
-        trainImg = data['train_img']
+        trainImg = normolization(data['train_img'])
         trainLabel = to_one_hot(data['train_label'])
-        testImg = data['test_img']
+        testImg = normolization(data['test_img'])
         testLabel = to_one_hot(data['test_label'])
         return trainImg, trainLabel, testImg, testLabel
 
+def normolization(x):
+    x = x / 255.0
+    return x
 
 def to_one_hot(x):
     result = np.zeros([x.shape[0],10])
