@@ -16,24 +16,26 @@ layer = TwoLayer(inputSize, HIDDEN_SIZE, OUTPUT_SIZE)
 for i in range(LEARNING_NUM):
 
     mask = np.random.choice(trainImg.shape[0], BATCH_SIZE)
-    input = trainImg[mask]
-    inputT = trainLabel[mask]
+    train = trainImg[mask]
+    trainTeacher = trainLabel[mask]
 
 
-    loss = layer.loss(input, inputT)
-    gradients = layer.back(input, inputT, 1)
+    loss = layer.loss(train, trainTeacher)
+    gradients = layer.back(train, trainTeacher, 1)
 
     layer.params['w1'] = layer.params['w1'] - LEARNING_RATE * gradients['w1']
     layer.params['b1'] = layer.params['b1'] - LEARNING_RATE * gradients['b1']
     layer.params['w2'] = layer.params['w2'] - LEARNING_RATE * gradients['w2']
     layer.params['b2'] = layer.params['b2'] - LEARNING_RATE * gradients['b2']
 
-
-
-
     if(i % BATCH_SIZE == 0):
         testMask = np.random.choice(testImg.shape[0], BATCH_SIZE)
         testX = testImg[testMask]
         testT = testLabel[testMask]
-        accuracy = layer.accuracy(testX,testT)
-        print("acc:",accuracy)
+        trainAcc = layer.accuracy(train,trainTeacher)
+        testAcc = layer.accuracy(testX,testT)
+
+        print("===================")
+        print("train acc:",trainAcc)
+        print("test acc:",testAcc)
+        print("===================")

@@ -42,7 +42,6 @@ class TwoLayer:
         return loss
 
     def back(self,x,t,dout):
-        self.loss(x,t)
         g0 = ((self.y - t)/ x.shape[0]) * dout
         gb2 = np.sum(g0,axis=0)
         gw2 = np.dot(self.z2.T,g0)
