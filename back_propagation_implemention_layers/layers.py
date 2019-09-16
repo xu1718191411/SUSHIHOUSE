@@ -6,7 +6,7 @@ class Affine:
     w = None
     b = None
 
-    gradients = {}
+    gradients = None
 
     def __init__(self, w, b):
         self.w = w
@@ -18,13 +18,13 @@ class Affine:
         z = z0 + self.b
         return z
 
-    def back(self,x,dout):
-        self.forward(x)
+    def back(self,dout):
 
-        db = dout
-        dw = np.dot(x.T,dout)
-        dx = np.dot(dout,self.w.T)
+        db = np.sum(dout,axis=0)
+        dw = np.dot(self.x.T, dout)
+        dx = np.dot(dout, self.w.T)
 
+        self.gradients = {}
         self.gradients['w'] = dw
         self.gradients['x'] = dx
         self.gradients['b'] = db
@@ -38,16 +38,14 @@ class Sigmoid:
 
     dx = None
 
-
     def forward(self,x):
         self.x = x
-        t =  1 / (1 + np.exp(-x))
+        t = 1 / (1 + np.exp(-x))
         self.t = t
         return self.t
 
-    def back(self,x,dout):
-        self.forward(x)
-        dx = (1-self.t)*self.t+dout
+    def back(self, dout):
+        dx = ((1-self.t)*self.t)*dout
         self.dx = dx
         return dx
 
@@ -65,16 +63,7 @@ class SoftMaxCrossEntropyError:
         result = cross_entropy_error(self.y, self.t)
         return result
 
-    def back(self):
-        dx = self.y - self.t
+    def back(self, dout):
+        dx = (self.y - self.t)*dout / self.y.shape[0]
         self.dx = dx
         return self.dx
-
-
-
-
-
-
-
-
-

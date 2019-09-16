@@ -28,7 +28,7 @@ def train(train,train_label,layer):
         mask = np.random.choice(DATA_DIM,BATCH_SIZE)
         trainBatch = train[mask]
         labelBatch = train_label[mask]
-        loss = layer.loss(trainBatch,labelBatch)
+        loss = layer.forward(trainBatch, labelBatch)
         gradients = layer.numericalGradient(trainBatch,labelBatch)
         for key in gradients.keys():
             layer.params[key] = layer.params[key] - LEARNING_RATE * gradients[key]
