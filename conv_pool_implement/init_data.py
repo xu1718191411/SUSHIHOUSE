@@ -7,11 +7,9 @@ def init_data():
     with open(path,'rb') as f:
         data = pickle.load(f)
         trainImg = formart_to_multi_dimensions(data['train_img'])
-
-        trainLabel = data['train_label']
-        data_to_one_hot(trainLabel)
+        trainLabel = data_to_one_hot(data['train_label'])
         testImg = formart_to_multi_dimensions(data['test_img'])
-        testLabel = data['test_label']
+        testLabel = data_to_one_hot(data['test_label'])
         return trainImg,trainLabel,testImg,testLabel
 
 def formart_to_multi_dimensions(x):
