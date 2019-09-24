@@ -67,3 +67,5 @@ result6 = affine2.forward(result5)
 
 softmaxWithCrossEntropy = SoftmaxWithCrossEntropy()
 loss = softmaxWithCrossEntropy.forward(result6,testX)
+
+print("loss:",loss)

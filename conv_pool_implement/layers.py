@@ -87,7 +87,9 @@ class Affine:
     def forward(self,x):
         xNum = x.shape[0]
         x = np.reshape(x,[xNum,-1])
-        return np.dot(x,self.w) + self.b
+        res =  np.dot(x,self.w) + self.b
+        result = sigmoid(res)
+        return result
 
 
 class SoftmaxWithCrossEntropy:
