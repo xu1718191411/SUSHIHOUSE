@@ -74,3 +74,25 @@ class Pool:
 
         res2 = np.reshape(res1,[xNum,finalH,finalW,-1]).transpose(0,3,1,2)
         return res2
+
+
+class Affine:
+    w = None
+    b = None
+
+    def __init__(self,w,b):
+        self.w = w
+        self.b = b
+
+    def forward(self,x):
+        xNum = x.shape[0]
+        x = np.reshape(x,[xNum,-1])
+        return np.dot(x,self.w) + self.b
+
+
+class SoftmaxWithCrossEntropy:
+
+    def forward(self,x,t):
+        softmaxResult = softmax(x)
+        result = cross_entropy_error(softmaxResult,t)
+        return result

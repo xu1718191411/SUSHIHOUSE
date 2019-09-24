@@ -1,5 +1,29 @@
 import numpy as np
 
+
+def sigmoid(x):
+    return 1 / 1 + np.exp(-x)
+
+def softmax(x):
+
+    if x.ndim == 1:
+        max = np.max(x, axis=1)
+        x = x - max
+        result = np.exp(x) / np.sum(np.exp(x))
+        return result
+    else:
+        x = x.T
+        max = np.max(x,axis=0)
+        x = x - max
+        result = np.exp(x) / np.sum(np.exp(x),axis=0)
+        result = result.T
+        return result
+
+def cross_entropy_error(x,t):
+    delta = 1e-7
+    return np.sum(-1 * t * np.log(x + delta))/ x.shape[0]
+
+
 def im2col(input_data, filter_h, filter_w, stride=1, pad=0):
     """
 
