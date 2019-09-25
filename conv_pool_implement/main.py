@@ -4,6 +4,7 @@ from conv_pool_implement.init_data import *
 trainImg,trainLabel,testImg,testLabel = init_data()
 
 
+
 ########################################################
 BATCH_SIZE = 30
 weight = 0.01
