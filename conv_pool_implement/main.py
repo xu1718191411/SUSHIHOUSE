@@ -18,3 +18,6 @@ testT = testLabel[test_mask]
 cnnLayer = CNNLayers()
 
 cnnLayer.loss(trainX,trainT)
+
+
+cnnLayer.backward(1)

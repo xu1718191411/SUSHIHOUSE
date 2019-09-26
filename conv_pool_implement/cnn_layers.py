@@ -85,7 +85,15 @@ class CNNLayers:
         print(result)
         return result
 
-    def backward(self):
-        pass
+    def backward(self,dout):
+
+        dout = self.lastLayer.back(dout)
+        lists = list(self.layers.values())
+        lists.reverse()
+        for l in lists:
+            dout = l.back(dout)
+
+        return dout
+
 
 
