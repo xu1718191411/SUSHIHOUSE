@@ -1,8 +1,9 @@
 from conv_pool_implement.layers import *
-
+from collections import OrderedDict
 class CNNLayers:
     params = {}
-    layers = {}
+    layers = OrderedDict()
+    lastLayer = None
 
     paramWeight = None
     imageSizeW = None
@@ -14,6 +15,7 @@ class CNNLayers:
     outputSize = None
 
     def __init__(self):
+        self.initParamsValues()
         self.initParams()
         self.initLayers()
         pass
@@ -35,6 +37,10 @@ class CNNLayers:
         self.imageSizeW = 28 ##输入的图片的原始宽度
         self.imageSizeH = 28 ##输入图片的原始高度
 
+        self.hiddentSize = 100
+
+        self.outputSize = 10
+
     def initParams(self):
         weight = self.paramWeight
         filterNum = self.convFilter['filterNum']
@@ -51,20 +57,33 @@ class CNNLayers:
         finalPoolW = (int)(((finalConvW + self.poolParams['padding'] * 2 - self.poolParams['poolW'])/self.poolParams['poolW']) + 1)
         finalPoolH = (int)(((finalConvH + self.poolParams['padding'] * 2 - self.poolParams['poolH'])/self.poolParams['poolH']) + 1)
 
-        self.params['w2'] = np.random.randn(filterNum*finalPoolW*finalPoolH,self.hiddentSize)
-        self.params['b2']
+        self.params['w2'] = weight * np.random.randn(filterNum*finalPoolW*finalPoolH,self.hiddentSize)
+        self.params['b2'] = weight * np.random.randn(self.hiddentSize)
+
+        self.params['w3'] = weight * np.random.randn(self.hiddentSize,self.outputSize)
+        self.params['b3'] = weight * np.random.randn(self.outputSize)
+
 
     def initLayers(self):
         self.layers['conv'] = Conv(self.params['w1'],self.params['b1'],self.convFilter['filterSizeH'],self.convFilter['filterSizeW'],self.convFilter['stride'],self.convFilter['padding'])
         self.layers['relu'] = Relu()
-        self.layers['pool'] = Pool()
-        self.layers['affine1'] = Affine()
+        self.layers['pool'] = Pool(self.poolParams['poolH'],self.poolParams['poolW'],self.poolParams['stride'],self.poolParams['padding'])
+        self.layers['affine1'] = Affine(self.params['w2'],self.params['b2'])
         self.layers['relu'] = Relu()
-        self.layers['affine2'] = Affine()
+        self.layers['affine2'] = Affine(self.params['w3'],self.params['b3'])
         self.lastLayer = SoftmaxWithCrossEntropy()
 
-    def forward(self,x):
-        pass
+    def predict(self,x):
+
+        for layer in self.layers.keys():
+            x = self.layers[layer].forward(x)
+        return x
+
+    def loss(self,x,t):
+        x = self.predict(x)
+        result = self.lastLayer.forward(x,t)
+        print(result)
+        return result
 
     def backward(self):
         pass

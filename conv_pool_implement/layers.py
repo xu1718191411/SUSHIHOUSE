@@ -18,7 +18,7 @@ class Conv:
     stride = None
     padding = None
 
-    def __init__(self,w,b,filterSizeH,filterSizeW,stride,padding):
+    def __init__(self,w,b,filterSizeW,filterSizeH,stride,padding):
         self.w = w
         self.b = b
         self.filterSizeH = filterSizeH
