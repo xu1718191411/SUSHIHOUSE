@@ -20,4 +20,5 @@ cnnLayer = CNNLayers()
 cnnLayer.loss(trainX,trainT)
 
 
-cnnLayer.backward(1)
+gradients = cnnLayer.backward()
+print(1)

@@ -32,8 +32,6 @@ class Conv:
     col = None
     colW = None
 
-
-
     filterSizeH = None
     filterSizeW = None
     stride = None
@@ -163,6 +161,7 @@ class Affine:
         dx = np.dot(dout,self.w.T)
         self.dw = np.dot(self.x.T,dout)
 
+        self.db = np.sum(dout,axis=0)
         self.dx = np.reshape(dx,self.originalShape)# originalShape目前还不明白为什么要加这个
         return self.dx
 

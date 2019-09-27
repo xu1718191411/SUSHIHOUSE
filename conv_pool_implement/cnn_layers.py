@@ -23,15 +23,15 @@ class CNNLayers:
     def initParamsValues(self):
         self.paramWeight = 0.01
         self.convFilter['filterColorDim'] = 1
-        self.convFilter['filterNum'] = 3
+        self.convFilter['filterNum'] = 30
         self.convFilter['filterSizeH'] = 5
         self.convFilter['filterSizeW'] = 5
         self.convFilter['stride'] = 1
         self.convFilter['padding'] = 0
 
-        self.poolParams['poolH'] = 4
-        self.poolParams['poolW'] = 4
-        self.poolParams['stride'] = 4
+        self.poolParams['poolH'] = 2
+        self.poolParams['poolW'] = 2
+        self.poolParams['stride'] = 2
         self.poolParams['padding'] = 0
 
         self.imageSizeW = 28 ##输入的图片的原始宽度
@@ -85,16 +85,25 @@ class CNNLayers:
         print(result)
         return result
 
-    def backward(self,dout):
-
+    def backward(self):
+        dout = 1
         dout = self.lastLayer.back(dout)
         lists = list(self.layers.values())
         lists.reverse()
         for l in lists:
             dout = l.back(dout)
-            print(1)
 
-        return dout
+        gradients = {}
+        gradients['dw1'] = self.layers['conv'].dw
+        gradients['db1'] = self.layers['conv'].db
+
+        gradients['dw2'] = self.layers['affine1'].dw
+        gradients['db2'] = self.layers['affine1'].db
+
+        gradients['dw3'] = self.layers['affine2'].dw
+        gradients['db3'] = self.layers['affine2'].db
+
+        return gradients
 
 
 
