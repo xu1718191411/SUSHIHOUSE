@@ -22,6 +22,8 @@ class Relu:
 
 class Conv:
 
+    x = None
+
     w = None #filter
     b = None
     dw = None
@@ -37,6 +39,7 @@ class Conv:
     stride = None
     padding = None
 
+
     def __init__(self,w,b,filterSizeW,filterSizeH,stride,padding):
         self.w = w
         self.b = b
@@ -46,6 +49,7 @@ class Conv:
         self.padding = padding
 
     def forward(self,x):
+        self.x = x
         xNum = x.shape[0]
         xColorNum = x.shape[1]
         xHeight = x.shape[2]
@@ -92,6 +96,8 @@ class Pool:
     poolH = None
     stride = None
     padding = None
+    x = None
+    argMax = None
 
     def __init__(self,poolW,poolH,stride,padding):
         self.poolW = poolW
@@ -101,6 +107,8 @@ class Pool:
 
 
     def forward(self,x):
+        self.x = x
+
         xNum,xCNum,xH,xW = x.shape
         finalH = int(((xH + 2*self.padding) - self.poolH)/self.stride + 1)
         finalW = int(((xW + 2*self.padding) - self.poolW)/self.stride + 1)
@@ -108,6 +116,7 @@ class Pool:
         col = im2col(x,self.poolH,self.poolW,self.stride,self.padding)
         res0 = np.reshape(col,[-1,self.poolH*self.poolW])
         res1 = np.max(res0,axis=1)
+        self.argMax = np.argmax(res0,axis=1)
 
         res2 = np.reshape(res1,[xNum,finalH,finalW,-1]).transpose(0,3,1,2)
         return res2
@@ -115,13 +124,13 @@ class Pool:
     def back(self, dout):
         dout = dout.transpose(0, 2, 3, 1)
 
-        pool_size = self.pool_h * self.pool_w
+        pool_size = self.poolH * self.poolW
         dmax = np.zeros((dout.size, pool_size))
-        dmax[np.arange(self.arg_max.size), self.arg_max.flatten()] = dout.flatten()
+        dmax[np.arange(self.argMax.size), self.argMax.flatten()] = dout.flatten()
         dmax = dmax.reshape(dout.shape + (pool_size,))
 
         dcol = dmax.reshape(dmax.shape[0] * dmax.shape[1] * dmax.shape[2], -1)
-        dx = col2im(dcol, self.x.shape, self.pool_h, self.pool_w, self.stride, self.pad)
+        dx = col2im(dcol, self.x.shape, self.poolH, self.poolW, self.stride, self.padding)
 
         return dx
 
@@ -133,11 +142,16 @@ class Affine:
     dw = None
     db = None
 
+    originalShape = None
+
     def __init__(self,w,b):
         self.w = w
         self.b = b
 
     def forward(self,x):
+
+        self.originalShape = x.shape #目前还不明白为什么要加这个
+        x = np.reshape(x,[self.originalShape[0],-1])
         self.x = x
         xNum = x.shape[0]
         x = np.reshape(x,[xNum,-1])
@@ -146,8 +160,10 @@ class Affine:
         return result
 
     def back(self,dout):
-        self.dx = np.dot(dout,self.w.T)
+        dx = np.dot(dout,self.w.T)
         self.dw = np.dot(self.x.T,dout)
+
+        self.dx = np.reshape(dx,self.originalShape)# originalShape目前还不明白为什么要加这个
         return self.dx
 
 

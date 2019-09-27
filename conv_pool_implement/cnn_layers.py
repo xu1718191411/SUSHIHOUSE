@@ -66,10 +66,10 @@ class CNNLayers:
 
     def initLayers(self):
         self.layers['conv'] = Conv(self.params['w1'],self.params['b1'],self.convFilter['filterSizeH'],self.convFilter['filterSizeW'],self.convFilter['stride'],self.convFilter['padding'])
-        self.layers['relu'] = Relu()
+        self.layers['relu1'] = Relu()
         self.layers['pool'] = Pool(self.poolParams['poolH'],self.poolParams['poolW'],self.poolParams['stride'],self.poolParams['padding'])
         self.layers['affine1'] = Affine(self.params['w2'],self.params['b2'])
-        self.layers['relu'] = Relu()
+        self.layers['relu2'] = Relu()
         self.layers['affine2'] = Affine(self.params['w3'],self.params['b3'])
         self.lastLayer = SoftmaxWithCrossEntropy()
 
@@ -92,6 +92,7 @@ class CNNLayers:
         lists.reverse()
         for l in lists:
             dout = l.back(dout)
+            print(1)
 
         return dout
 
