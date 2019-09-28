@@ -2,7 +2,7 @@ import numpy as np
 
 
 def sigmoid(x):
-    return 1 / 1 + np.exp(-x)
+    return 1 / (1 + np.exp(-x))
 
 def softmax(x):
 
@@ -87,3 +87,28 @@ def col2im(col, input_shape, filter_h, filter_w, stride=1, pad=0):
             img[:, :, y:y_max:stride, x:x_max:stride] += col[:, :, y, x, :, :]
 
     return img[:, :, pad:H + pad, pad:W + pad]
+
+
+def calculate_numerical_gradient(x,f):
+    result = np.zeros_like(x)
+    arr = np.nditer(x,flags=['multi_index'],op_flags=['readwrite'])
+
+    delta = 1e-4
+    while not arr.finished:
+        index = arr.multi_index
+        value = x[index]
+
+        x[index] = value - delta
+        s1 = f(x)
+
+        x[index] = value + delta
+        s2 = f(x)
+
+        res = (s2 - s1) / (2*delta)
+        result[index] = res
+
+        x[index] = value
+        arr.iternext()
+
+    return result
+
