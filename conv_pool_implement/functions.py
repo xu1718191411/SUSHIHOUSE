@@ -2,7 +2,8 @@ import numpy as np
 
 
 def sigmoid(x):
-    return 1 / (1 + np.exp(-x))
+    result =  1 / (1 + np.exp(-x))
+    return result
 
 def softmax(x):
 
@@ -22,7 +23,6 @@ def softmax(x):
 def cross_entropy_error(x,t):
     delta = 1e-7
     return np.sum(-1 * t * np.log(x + delta))/ x.shape[0]
-
 
 def im2col(input_data, filter_h, filter_w, stride=1, pad=0):
     """

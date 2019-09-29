@@ -17,7 +17,9 @@ class Relu:
         mask1 = self.x >= 0
         self.dx[mask0] = 0
         self.dx[mask1] = 1
-        return self.dx * dout
+        result = self.dx * dout
+        return result
+
 
 
 class Conv:
@@ -153,8 +155,7 @@ class Affine:
         self.x = x
         xNum = x.shape[0]
         x = np.reshape(x,[xNum,-1])
-        res =  np.dot(x,self.w) + self.b
-        result = sigmoid(res)
+        result =  np.dot(x,self.w) + self.b
         return result
 
     def back(self,dout):

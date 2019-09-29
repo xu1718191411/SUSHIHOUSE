@@ -23,12 +23,9 @@ for i in range(LEARNING_NUM):
 
     loss = cnnLayer.loss(trainX, trainT)
     gradients = cnnLayer.backward()
-    # numerical_gradients = cnnLayer.numerical_gradient(trainX, trainT)
 
-    cnnLayer.params['w1'] = cnnLayer.params['w1'] - LEARNING_RATE * gradients['dw1']
-    cnnLayer.params['b1'] = cnnLayer.params['b1'] - LEARNING_RATE * gradients['db1']
-    cnnLayer.params['w2'] = cnnLayer.params['w2'] - LEARNING_RATE * gradients['dw2']
-    cnnLayer.params['b2'] = cnnLayer.params['b2'] - LEARNING_RATE * gradients['db2']
-    cnnLayer.params['w3'] = cnnLayer.params['w3'] - LEARNING_RATE * gradients['dw3']
-    cnnLayer.params['b3'] = cnnLayer.params['b3'] - LEARNING_RATE * gradients['db3']
+    for key in gradients.keys():
+        cnnLayer.params[key] -= LEARNING_RATE * gradients[key]
+
+
     print(loss)

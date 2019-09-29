@@ -18,7 +18,6 @@ class CNNLayers:
         self.initParamsValues()
         self.initParams()
         self.initLayers()
-        pass
 
     def initParamsValues(self):
         self.paramWeight = 0.01
@@ -74,7 +73,6 @@ class CNNLayers:
         self.lastLayer = SoftmaxWithCrossEntropy()
 
     def predict(self,x):
-
         for layer in self.layers.keys():
             x = self.layers[layer].forward(x)
         return x
@@ -94,14 +92,14 @@ class CNNLayers:
             dout = l.back(dout)
 
         gradients = {}
-        gradients['dw1'] = self.layers['conv'].dw
-        gradients['db1'] = self.layers['conv'].db
+        gradients['w1'] = self.layers['conv'].dw
+        gradients['b1'] = self.layers['conv'].db
 
-        gradients['dw2'] = self.layers['affine1'].dw
-        gradients['db2'] = self.layers['affine1'].db
+        gradients['w2'] = self.layers['affine1'].dw
+        gradients['b2'] = self.layers['affine1'].db
 
-        gradients['dw3'] = self.layers['affine2'].dw
-        gradients['db3'] = self.layers['affine2'].db
+        gradients['w3'] = self.layers['affine2'].dw
+        gradients['b3'] = self.layers['affine2'].db
 
         return gradients
 
