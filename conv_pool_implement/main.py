@@ -6,6 +6,7 @@ trainImg, trainLabel, testImg, testLabel = init_data()
 
 BATCH_SIZE = 100
 LEARNING_NUM = 1000
+EPOCH_SIZE = LEARNING_NUM / BATCH_SIZE
 LEARNING_RATE = 0.01
 
 cnnLayer = CNNLayers()
@@ -18,14 +19,14 @@ for i in range(LEARNING_NUM):
     trainX = trainImg[train_mask]
     trainT = trainLabel[train_mask]
 
-    # testX = testImg[test_mask]
-    # testT = testLabel[test_mask]
-
     loss = cnnLayer.loss(trainX, trainT)
     gradients = cnnLayer.backward()
 
     for key in gradients.keys():
         cnnLayer.params[key] -= LEARNING_RATE * gradients[key]
+    if (i % EPOCH_SIZE == 0):
+        testX = testImg[test_mask]
+        testT = testLabel[test_mask]
+        acc = cnnLayer.accuracy(testX,testT)
+        print("acc:",acc)
 
-
-    print(loss)

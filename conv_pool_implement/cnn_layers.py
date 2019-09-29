@@ -80,7 +80,6 @@ class CNNLayers:
     def loss(self,x,t):
         x = self.predict(x)
         result = self.lastLayer.forward(x,t)
-        print(result)
         return result
 
     def backward(self):
@@ -102,6 +101,16 @@ class CNNLayers:
         gradients['b3'] = self.layers['affine2'].db
 
         return gradients
+
+    def accuracy(self,x,t):
+        result = self.predict(x)
+        resultArgMax = np.argmax(result,axis=1)
+        tArgMax = np.argmax(t,axis=1)
+        matchCount = np.sum(tArgMax == resultArgMax)
+        result = matchCount / x.shape[0]
+        return result
+
+
 
 
 
