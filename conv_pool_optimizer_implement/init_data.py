@@ -21,6 +21,5 @@ def to_multi_dimensions(x):
 def to_one_hot(x):
     result = np.zeros([x.shape[0],10])
     for i in range(len(x)):
-        print(i)
         result[i][x[i]] = 1
     return result
