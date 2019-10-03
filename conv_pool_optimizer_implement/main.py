@@ -31,14 +31,18 @@ result2 = affine2.forward(result1)
 relu = Relu()
 
 result = relu.forward(result2)
+label = np.random.rand(input_size,output_size)
 
-dout = np.random.randn(input_size,output_size)
+crossEntropyError = CrossEntropyError()
+loss = crossEntropyError.forward(result,label)
+
+print("loss:",loss)
+
+dout = crossEntropyError.backward(1)
 
 dout = relu.backward(dout)
 dout = affine2.backward(dout)
 dout = affine1.backward(dout)
-
-
 
 s = np.zeros(5)
 print(1)
