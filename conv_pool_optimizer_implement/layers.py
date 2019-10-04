@@ -60,3 +60,31 @@ class CrossEntropyError:
     def backward(self,dout):
         result = (self.y - self.t) * dout
         return result / self.x.shape[0] #记住这里要除以batch_size
+
+
+
+class Conv:
+
+    x = None
+    inputColorChannel = None
+    inputX = None
+    inputH = None
+    filter = None
+    filterX = None
+    filterH = None
+
+    stride = None
+
+    def __init__(self,x,filterX,filterH,stride,padding):
+        self.x = x
+        self.inputColorChannel = x.shape[1]
+        self.filterX = filterX
+        self.filterH = filterH
+        self.stride = stride
+        self.padding = padding
+
+    def initFilter(self):
+        self.filter = np.random.randn(self.inputColorChannel,self.filterX,self.filterH)
+
+    def forward(self,x):
+        pass
