@@ -92,4 +92,4 @@ class Conv:
         filter = self.filter.reshape([self.inputColorChannel,-1])
         filter = filter.T
         res = np.dot(cols,filter)
-        finalXNum = self.x.shape[0] + s
+
