@@ -1,5 +1,5 @@
 import numpy as np
-
+from conv_pool_optimizer_implement.functions import *
 class Relu:
     x = None
     mask = None
@@ -82,9 +82,14 @@ class Conv:
         self.filterH = filterH
         self.stride = stride
         self.padding = padding
+        self.initFilter()
 
     def initFilter(self):
         self.filter = np.random.randn(self.inputColorChannel,self.filterX,self.filterH)
 
-    def forward(self,x):
-        pass
+    def forward(self):
+        cols = im2col(self.x,self.filterH,self.filterX,self.stride,self.padding)
+        filter = self.filter.reshape([self.inputColorChannel,-1])
+        filter = filter.T
+        res = np.dot(cols,filter)
+        finalXNum = self.x.shape[0] + s
