@@ -66,6 +66,7 @@ class CrossEntropyError:
 class Conv:
 
     x = None
+    inputNum = None
     inputColorChannel = None
     inputX = None
     inputH = None
@@ -77,6 +78,9 @@ class Conv:
 
     def __init__(self,x,filterX,filterH,stride,padding):
         self.x = x
+        self.inputX = x.shape[2]
+        self.inputH = x.shape[3]
+        self.inputNum = x.shape[0]
         self.inputColorChannel = x.shape[1]
         self.filterX = filterX
         self.filterH = filterH
@@ -92,4 +96,10 @@ class Conv:
         filter = self.filter.reshape([self.inputColorChannel,-1])
         filter = filter.T
         res = np.dot(cols,filter)
+
+        finalXNum = int(((self.inputX + 2*self.padding - self.filterX) / self.stride) + 1)
+        finalHNum = int(((self.inputH + 2*self.padding - self.filterH) / self.stride) + 1)
+
+        res = np.reshape(res,[self.inputNum,self.inputColorChannel,finalXNum,finalHNum])
+        return res
 
