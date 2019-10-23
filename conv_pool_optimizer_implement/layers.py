@@ -93,13 +93,15 @@ class Conv:
 
     def forward(self):
         cols = im2col(self.x,self.filterH,self.filterX,self.stride,self.padding)
-        filter = self.filter.reshape([self.inputColorChannel,-1])
-        filter = filter.T
+        filter = self.filter.reshape([self.inputColorChannel * self.filterX * self.filterH,-1])
         res = np.dot(cols,filter)
 
         finalXNum = int(((self.inputX + 2*self.padding - self.filterX) / self.stride) + 1)
         finalHNum = int(((self.inputH + 2*self.padding - self.filterH) / self.stride) + 1)
 
-        res = np.reshape(res,[self.inputNum,self.inputColorChannel,finalXNum,finalHNum])
+        res = np.reshape(res,[self.inputNum,1,finalXNum,finalHNum])
         return res
+
+    def backward(self,dout):
+        pass
 

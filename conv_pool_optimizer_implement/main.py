@@ -6,6 +6,8 @@ trainImg,trainLabel,testImg,testLabel = init_data()
 BATCH_SIZE = 100
 
 
+trainImg = np.random.randn(100,3,28,28)
+
 mask = np.random.choice(trainImg.shape[0],BATCH_SIZE)
 x = trainImg[mask]
 conv = Conv(x,5,5,1,0)
@@ -13,35 +15,37 @@ conv.forward()
 
 
 
-##################################################
-#
-# input_size = 30
-# hidden_size_1 = 15
-# hidden_size_2 = 25
-# output_size = 10
-#
-# x = np.random.randn(input_size,hidden_size_1)
-# w = np.random.randn(hidden_size_1,hidden_size_2)
-# b = np.random.randn(hidden_size_2)
-#
-# affine1 = Affine(w,b)
-#
-# w1 = np.random.randn(hidden_size_2,output_size)
-# b1 = np.random.randn(output_size)
-#
-# affine2 = Affine(w1,b1)
-#
-# result1 = affine1.forward(x)
-# result2 = affine2.forward(result1)
-#
-# relu = Relu()
-#
-# result = relu.forward(result2)
-# label = np.random.rand(input_size,output_size)
-#
-# crossEntropyError = CrossEntropyError()
-# loss = crossEntropyError.forward(result,label)
-#
+#################################################
+
+input_size = 30
+hidden_size_1 = 15
+hidden_size_2 = 25
+output_size = 10
+
+x = np.random.randn(input_size,hidden_size_1)
+w = np.random.randn(hidden_size_1,hidden_size_2)
+b = np.random.randn(hidden_size_2)
+
+affine1 = Affine(w,b)
+
+w1 = np.random.randn(hidden_size_2,output_size)
+b1 = np.random.randn(output_size)
+
+affine2 = Affine(w1,b1)
+
+result1 = affine1.forward(x)
+result2 = affine2.forward(result1)
+
+relu = Relu()
+
+result = relu.forward(result2)
+label = np.random.rand(input_size,output_size)
+
+crossEntropyError = CrossEntropyError()
+loss = crossEntropyError.forward(result,label)
+
+
+
 # print("loss:",loss)
 #
 # dout = crossEntropyError.backward(1)
@@ -51,8 +55,8 @@ conv.forward()
 # dout = affine1.backward(dout)
 #
 # s = np.zeros(5)
-#
-#
+
+
 
 
 print(1)
