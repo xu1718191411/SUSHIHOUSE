@@ -10,8 +10,12 @@ trainImg = np.random.randn(100,3,28,28)
 
 mask = np.random.choice(trainImg.shape[0],BATCH_SIZE)
 x = trainImg[mask]
-conv = Conv(x,5,5,1,0)
-conv.forward()
+conv = Conv(x,3, 3, 3, 1, 0)
+
+res = conv.forward()
+
+
+backRes = conv.backward(np.random.randn(100,3,26,26))
 
 
 
