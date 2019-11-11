@@ -126,3 +126,51 @@ class Conv:
         dcol = np.dot(dout, self.f.T)
         self.dx = col2im(dcol, self.x.shape, self.filterH, self.filterW, self.stride, self.padding)
         return self.dx
+
+class Pool:
+    poolH = None
+    poolW = None
+    stride = None
+    padding = None
+    x = None
+
+    def __init__(self,poolH,poolW,stride,padding):
+        self.poolH = poolH
+        self.poolW = poolW
+        self.stride = stride
+        self.padding = padding
+
+
+    def forward(self,x):
+        self.x = x
+        height = self.x.shape[1]
+
+        batchSize = self.x.shape[0]
+        colorSize = self.x.shape[1]
+        heightSize = self.x.shape[2]
+        widthSize = self.x.shape[3]
+
+        finalHeight = ((heightSize + 2 * self.padding - self.poolH) / self.stride) + 1
+        finalHeight = int(finalHeight)
+        finalWidth = ((widthSize + 2 * self.padding - self.poolW) / self.stride) + 1
+        finalWidth = int(finalWidth)
+
+        cols = im2col(self.x,self.poolH,self.poolW,self.stride,self.padding)
+        print(1)
+        # cols 57600,27 -> 100 * 24 * 24
+        cols1 = cols.reshape(-1,9) # 172800,9
+        # cols1 172800,9 -> 100 * 24 * 24 * 3
+
+        cols2 = np.argmax(cols1,axis=1)
+        # cols2 172800,1
+        print(1)
+
+        cols3 = cols2.reshape(-1,3)
+        # cols3 57600,3
+        print(1)
+
+        result = cols3.reshape(batchSize,finalHeight,finalWidth,-1)
+        print(1)
+
+
+
